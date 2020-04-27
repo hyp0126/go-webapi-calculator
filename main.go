@@ -122,6 +122,19 @@ func main() {
         fmt.Fprintf(c.ResponseWriter, "%v + %v = %v",
             n1, n2, n1 + n2)
     })
+ 
+   // 나누기 핸들러
+	   r.HandleFunc("GET", "/divide/:number1/:number2", func(c *Context) {
+
+		    n1, n2 := convParams2Int(c.Params["number1"], c.Params["number2"])
+
+		    if n2 != 0 {
+			    fmt.Fprintf(c.ResponseWriter, "%v / %v = %6.2f",
+				      n1, n2, float32(n1)/float32(n2))
+		    } else {
+			    fmt.Fprintf(c.ResponseWriter, "[Error] Your divisor is 0. Please Check it again")
+		    }
+	   })
 
     http.ListenAndServe(":8080", r)
 }
