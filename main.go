@@ -124,6 +124,15 @@ func main() {
             n1, n2, n1 + n2)
     })
 
+    // 빼기 핸들러
+    r.HandleFunc("GET", "/minus/:number1/:number2", func(c *Context) {
+
+        n1, n2 := convParams2Int(c.Params["number1"], c.Params["number2"])
+
+        fmt.Fprintf(c.ResponseWriter, "%v - %v = %v",
+            n1, n2, n1 - n2)
+    }) 
+
     // power will call math.Pow(number1,number2)
     r.HandleFunc("GET", "/power/:number1/:number2", func(c *Context) {
 
