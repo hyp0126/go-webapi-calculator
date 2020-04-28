@@ -104,19 +104,27 @@ func convParams2Int(a, b interface{}) (int, int) {
 
 func main() {
     r := &router{make(map[string]map[string]HandlerFunc)}
- 
 
     r.HandleFunc("GET", "/", func(c *Context) {
         fmt.Fprintln(c.ResponseWriter, "Welcome!")
     })
- 
+
     // 더하기 핸들러
     r.HandleFunc("GET", "/plus/:number1/:number2", func(c *Context) {
 
         n1, n2 := convParams2Int(c.Params["number1"], c.Params["number2"])
-        
+
         fmt.Fprintf(c.ResponseWriter, "%v + %v = %v",
-            n1, n2, n1 + n2)
+            n1, n2, n1+n2)
+    })
+
+    // 나머지 핸들러
+    r.HandleFunc("GET", "/modulo/:number1/:number2", func(c *Context) {
+
+        n1, n2 := convParams2Int(c.Params["number1"], c.Params["number2"])
+
+        fmt.Fprintf(c.ResponseWriter, "%v %% %v = %v",
+            n1, n2, n1%n2)
     })
 
     // 빼기 핸들러
