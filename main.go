@@ -72,7 +72,8 @@ func match(pattern, path string) (bool, map[string]string) {
 }
 
 func (r *router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
-	// http 메서드에 맞는 모든 handers를 반복하면서 요청 URL에 해당하는 handler를 찾음
+	// http 메서드에 맞는 모든 handers를 반복하면서 요청 URL에 해당하는 handler를 찾음]
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	for pattern, handler := range r.handlers[req.Method] {
 		if ok, params := match(pattern, req.URL.Path); ok {
 			// Context 생성
@@ -114,8 +115,8 @@ func main() {
 
         n1, n2 := convParams2Int(c.Params["number1"], c.Params["number2"])
 
-        fmt.Fprintf(c.ResponseWriter, "%v + %v = %v",
-            n1, n2, n1+n2)
+        fmt.Fprintf(c.ResponseWriter, "%v",
+            n1+n2)
     })
 
     // 나머지 핸들러
@@ -123,8 +124,8 @@ func main() {
 
         n1, n2 := convParams2Int(c.Params["number1"], c.Params["number2"])
 
-        fmt.Fprintf(c.ResponseWriter, "%v %% %v = %v",
-            n1, n2, n1%n2)
+        fmt.Fprintf(c.ResponseWriter, "%v",
+            n1%n2)
     })
 
     // 빼기 핸들러
@@ -132,8 +133,8 @@ func main() {
 
         n1, n2 := convParams2Int(c.Params["number1"], c.Params["number2"])
 
-        fmt.Fprintf(c.ResponseWriter, "%v - %v = %v",
-            n1, n2, n1 - n2)
+        fmt.Fprintf(c.ResponseWriter, "%v",
+            n1 - n2)
     }) 
 
     // power will call math.Pow(number1,number2)
@@ -141,8 +142,8 @@ func main() {
 
     	n1, n2 := convParams2Int(c.Params["number1"], c.Params["number2"])
 
-    	fmt.Fprintf(c.ResponseWriter, "%v ^ %v = %v",
-    		n1, n2, math.Pow(float64(n1),float64(n2)))
+    	fmt.Fprintf(c.ResponseWriter, "%v",
+    		math.Pow(float64(n1),float64(n2)))
     })
   
   	// 곱하기 핸들러
@@ -150,8 +151,8 @@ func main() {
 
   		n1, n2 := convParams2Int(c.Params["number1"], c.Params["number2"])
 
-  		fmt.Fprintf(c.ResponseWriter, "%v * %v = %v",
-  			n1, n2, n1*n2)
+  		fmt.Fprintf(c.ResponseWriter, "%v",
+  			n1*n2)
   	})
 
     // 나누기 핸들러
@@ -160,8 +161,8 @@ func main() {
     	n1, n2 := convParams2Int(c.Params["number1"], c.Params["number2"])
 
     	if n2 != 0 {
-    		fmt.Fprintf(c.ResponseWriter, "%v / %v = %6.2f",
-    			n1, n2, float32(n1)/float32(n2))
+    		fmt.Fprintf(c.ResponseWriter, "%6.2f",
+    			float32(n1)/float32(n2))
     		} else {
     			fmt.Fprintf(c.ResponseWriter, "[Error] Your divisor is 0. Please Check it again")
     		}
